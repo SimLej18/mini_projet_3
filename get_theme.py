@@ -1,4 +1,4 @@
-def get_theme(probabilities, most_probable_theme):
+def get_theme(probabilities, most_probable_theme=('', 0)):
     """
     Finds the theme of an article by comparing the probabilities of each theme.
     Parameters:
@@ -28,7 +28,7 @@ def get_theme(probabilities, most_probable_theme):
     # --- Recursive case ---
     if probabilities[0][1] > most_probable_theme[1]:
         # Checks for a new highest probability
-        most_probable_theme = probabilities[0][1]
+        most_probable_theme = probabilities[0]
 
     # Calls get_theme() to analyse the next element of list probabilities
     return get_theme(probabilities[1:], most_probable_theme)
