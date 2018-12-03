@@ -148,7 +148,6 @@ def sort(probabilities, path):
     files = [file for file in os.listdir(path+'/unsorted/') if not file == '.DS_Store']
     for file in files:
         # Get all the words used in the file
-        print(path+'/'+file)
         words = get_words_in_file(path+'/unsorted/'+file)
 
         # Get all the probabilities for the file to be in one theme
