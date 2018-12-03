@@ -21,13 +21,14 @@ def get_words_in_file(path):
     message = file.read()
 
     while counter != len(message):
-        if message[counter - 1] not in characters_allowed and message[counter] in characters_allowed: # A word is starting
+        if message[counter - 1] not in characters_allowed and message[counter] in characters_allowed:
+            # A word is starting
             word = ''
-            while message[counter] in characters_allowed: # While the word is not "finished"
+            while message[counter] in characters_allowed:  # While the word is not "finished"
                 word += message[counter]
                 counter += 1
 
-            list_words.append(word) # The word is added to the list
+            list_words.append(word)  # The word is added to the list
 
         counter += 1
 
