@@ -18,7 +18,7 @@ def get_words_in_file(path):
     list_words: the list of words contained in the file (list)
     """
 
-    file = open(path, 'r')
+    file = open(path, 'r', encoding="ISO-8859-1")
 
     characters_allowed = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
     blacklist = [' ', 'the', 'be', 'are', 'of', 'and', 'a', 'in', 'that', 'have', 's', 'i', 'it', 'but', 'etc', 'to',
@@ -78,12 +78,18 @@ def get_prob_from_theme(theme_dico, words_list):
     probability = 0
     for word in theme_dico:
         # multiplicate the probabilities by the percentage of appeared word
+
+        # slightly modify probabilities to stay in the log function domain
+        if theme_dico[word] == (0, 1):
+            theme_dico[word] = (0.0000000001, 0.9999999999)
+        elif theme_dico[word] == (1, 0):
+            theme_dico[word] = (0.9999999999, 0.0000000001)
+
         if word in words_list:
             probability += log(theme_dico[word][0])
         # multiplicate the probabilities by the percentage of unappeared word
         else:
             probability += log(theme_dico[word][1])
-    print(probability)
     return probability
 
 
@@ -163,9 +169,7 @@ def sort(probabilities, path):
     files = [file for file in os.listdir(path+'/unsorted/') if not file == '.DS_Store']
     for file in files:
         # Get all the words used in the file
-        print(path+'/unsorted/'+file)
         words = get_words_in_file(path+'/unsorted/'+file)
-        print(words)
 
         # Get all the probabilities for the file to be in one theme
         text_theme_probs = []
