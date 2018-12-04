@@ -32,7 +32,7 @@ def get_words_in_file(path):
 
             word = word.lower()
 
-            if word not in blacklist:
+            if word not in blacklist and len(word) > 2:
                 list_words.append(word) # The word is added to the list
 
         character_index += 1
