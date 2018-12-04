@@ -1,3 +1,8 @@
+"""
+This module purpose is to analyse the documents in the unsorted directory
+and move them to the correct cirectory in sorted.
+"""
+
 import os
 
 
@@ -16,36 +21,50 @@ def get_words_in_file(path):
     file = open(path, 'r')
 
     characters_allowed = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    blacklist = [' ', 'the', 'be', 'are', 'of', 'and', 'a', 'in', 'that', 'have', 's', 'i', 'it', 'but', 'etc', 'to',
+                 'for', 'not', 'on', 'with', 'has', 'he', 'as', 'you', 'do', 'at', 'this', 'his', 'by', 'from', 'they',
+                 'we', 'say', 'her', 'she', 'on', 'an', 'will', 'my', 'one', 'all', 'would', 'there', 'their', 'what',
+                 'so', 'up', 'out', 'if', 'about', 'who', 'get', 'which', 'me', 'when', 'make', 'can', 'like', 'no',
+                 'just', 'him', 'know', 'take', 'into', 'your', 'good', 'same', 'could', 'them', 'see', 'other', 'than',
+                 'then', 'now', 'look', 'only', 'come', 'its', 'over', 'think', 'also', 'back', 'after', 'use', 'two',
+                 'how', 'our', 'first', 'well', 'way', 'even', 'new', 'want', 'because', 'any', 'these', 'give', 'day',
+                 'most', 'us', 'few', 'bye', 'regards', 'mr', 'ms', 'is', 'or', 'dt', 't', 'q', 'why', 'am', 'p', 'had',
+                 'some', 've', 're', 'thanks', 'once', '', '']
 
     list_words = []
 
-    counter = 1
+    message_with_spaces = ''
 
-    message = file.read()
+    message = file.read().lower()
 
-    while counter != len(message):
-        if message[counter - 1] not in characters_allowed and message[counter] in characters_allowed:
-            # A word is starting
-            word = ''
-            while message[counter] in characters_allowed:  # While the word is not "finished"
-                word += message[counter]
-                counter += 1
+    for character in message:
+        if character not in characters_allowed:
+            message_with_spaces += ' '
+        else:
+            message_with_spaces += character
 
-            list_words.append(word)  # The word is added to the list
+    list_words = str.split(message_with_spaces, ' ')
 
-        counter += 1
+    for word in list_words:
+        if word in blacklist:
+            list_words.remove(word)
+
+    list_words = list(filter(None, list_words))  # Deletes empty strings
 
     file.close()
 
     return list_words
 
 
-def get_prob_from_theme(theme_list, text_list):
+def get_prob_from_theme(theme_dico, words_list):
     """Return percentage for links between the text and the theme.
     Parameters
     ----------
-    theme_list: list of theme checked (list)
-    text_list: text with all the word in the text (list)
+    theme_dico: dictionary containing all words and their probabilities
+    for a given theme
+    theme_dico= {word1:[prob, anti-prob], word2:...}
+
+    words_list: all the words of the text (list)
 
     Return
     ------
@@ -53,24 +72,19 @@ def get_prob_from_theme(theme_list, text_list):
 
     """
 
-    sibling_word = []
-
-    # check word by word
-    for word_theme in theme_list:
-        for word_text in text_list:
-            if word_theme == word_text:
-                sibling_word.append(word_text)
+    from math import log
 
     # compute probabilities
-    prob_1 = 1
-    for prob in sibling_word:
-        # multiplicate the probabilities by the pourcentage of appeared word
-        prob_1 *= theme_list[prob][0]
-    for prob in theme_list:
-        # multiplicate the probabilities by the pourcentage of unappeared word
-        if not check_sibling(prob, sibling_word):
-            prob_1 *= theme_list[prob][1]
-    return prob_1
+    probability = 0
+    for word in theme_dico:
+        # multiplicate the probabilities by the percentage of appeared word
+        if word in words_list:
+            probability += log(theme_dico[word][0])
+        # multiplicate the probabilities by the percentage of unappeared word
+        else:
+            probability += log(theme_dico[word][1])
+    print(probability)
+    return probability
 
 
 def check_sibling(check_word, sibling_word):
@@ -93,7 +107,7 @@ def check_sibling(check_word, sibling_word):
     return False
 
 
-def get_theme(probabilities, most_probable_theme=('', 0)):
+def get_theme(probabilities, most_probable_theme=('', None)):
     """
     Finds the theme of an article by comparing the probabilities of each theme.
     Parameters:
@@ -121,7 +135,7 @@ def get_theme(probabilities, most_probable_theme=('', 0)):
         return most_probable_theme[0]
 
     # --- Recursive case ---
-    if probabilities[0][1] > most_probable_theme[1]:
+    if most_probable_theme[1] is None or probabilities[0][1] > most_probable_theme[1]:
         # Checks for a new highest probability
         most_probable_theme = probabilities[0]
 
@@ -133,8 +147,9 @@ def sort(probabilities, path):
     """ For each file, place it within the correct repertory.
     Parameters
     ----------
-    probabilities : dictionary which for each file returns both its probabilities to be or not to be in a theme
-    probabilities = {"theme1":{"word1": (prob, antiprob), "word2": (prob, antiprob), ...}, "theme2": ...}
+    probabilities : dictionary which for each file returns both its probabilities to be
+    or not to be in a theme
+    probabilities= {"theme1":{"word1":(prob, antiprob), "word2":(prob, antiprob),...}, "theme2":...}
 
     path : the path of the repertory where archives can be found
 
@@ -148,13 +163,19 @@ def sort(probabilities, path):
     files = [file for file in os.listdir(path+'/unsorted/') if not file == '.DS_Store']
     for file in files:
         # Get all the words used in the file
+        print(path+'/unsorted/'+file)
         words = get_words_in_file(path+'/unsorted/'+file)
+        print(words)
 
         # Get all the probabilities for the file to be in one theme
-        theme_probabilities = get_prob_from_theme(themes, words)
+        text_theme_probs = []
+        theme_prob = []
+        for theme in probabilities:
+            text_theme_probs = get_prob_from_theme(probabilities[theme], words)
+            theme_prob += [(theme, text_theme_probs)]
 
         # Get the most probable theme
-        file_theme = get_theme(theme_probabilities, ('', 0))
+        file_theme = get_theme(theme_prob)
 
         # Move file to the correct repertory
-        os.rename(os.getcwd() + '/unsorted/' + file, path + '/sorted/' + file_theme + '/' + file)
+        os.rename(path + '/unsorted/' + file, path + '/sorted/' + str(file_theme) + '/' + file)
