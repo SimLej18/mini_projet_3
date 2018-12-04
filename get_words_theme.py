@@ -1,21 +1,22 @@
-import os
-
-def get_words_theme(theme):
-    """return all the words of a theme
-    parameters:
+def get_words_theme(path):
+    """Returns all the words of a theme
+    
+    Parameters:
     ----------
-    theme : the theme (list)
+    path : the path to the theme (str)
 
-    returns:
+    Returns:
     --------
-    list_word : list of all the word of the theme (list)
+    list_words : list of all the words of the theme (list)
 
     """
 
-    list_word = []
-    text_list = os.listdir("./sorted/" + theme)
+    list_words = []
+    text_list = os.listdir(path)
+    
     for text in text_list:
-        list_word.extend(get_words_in_file("./sorted/" + theme + "/" + text))
+        list_words.extend(get_words_in_file(path + "/" + text))
 
-    list_word = list(set(list_word)) #remove duplicates words
-    return list_word
+    list_words = list(set(list_words)) # Remove duplicate words
+    
+    return list_words
