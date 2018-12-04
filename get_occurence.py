@@ -1,29 +1,28 @@
-def get_occurence(theme):
+def get_occurence(path):
     """Determines how often a word appears in the texts of each theme.
-    Parameters
+    
+    Parameters:
     ----------
-    theme: The themes checked (str)
-    Returns
+    path: The path to the theme (str)
+    
+    Returns:
     -------
-    words_occurence: The probability that a word is found in the texts of a theme (dic)
+    words_occurence: The probability that a word is found in the texts of a theme (dict)
     """
 
     words_occurence = {}
-    word_list = get_words_theme(theme)
-    text_list = os.listdir("D:/Programmation/UNamur/Mini-projet 3/Archives/archive_1/sorted/" + theme)
-
-    words = 0
+    word_list = get_words_theme(path)
+    text_list = os.listdir(path)
 
     dico_words = {}
 
     number_texts = 0
 
     for text in text_list:
-        dico_words.update({text : get_words_in_file("D:/Programmation/UNamur/Mini-projet 3/Archives/archive_1/sorted/" + theme + "/" + text)})
+        dico_words.update({text : get_words_in_file(path + "/" + text)})
         number_texts += 1
 
-    for word in word_list:
-        words += 1 
+    for word in word_list: 
         words_found = 0
         for text in text_list:       
             if word in dico_words[text]:
