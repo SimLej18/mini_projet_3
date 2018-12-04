@@ -129,4 +129,4 @@ def learn(path):
         dict_probabilities = get_occurence(path + '/' + directory)
         probabilities.update({directory : dict_probabilities})
     return probabilities
-    
+   
