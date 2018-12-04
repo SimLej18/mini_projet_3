@@ -1,6 +1,3 @@
-import math
-
-
 def get_prob_from_theme(theme_dico, words_list):
     """Return percentage for links between the text and the theme.
     Parameters
@@ -27,5 +24,5 @@ def get_prob_from_theme(theme_dico, words_list):
             probability += log(theme_dico[word][0])
         # multiplicate the probabilities by the percentage of unappeared word
         else:
-            probability += log(theme_list[word][1])
+            probability += log(theme_dico[word][1])
     return probability
