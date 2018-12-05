@@ -1,6 +1,6 @@
 """
 This module purpose is to analyse the documents in the unsorted directory
-and move them to the correct cirectory in sorted.
+and move them to the correct directory in sorted.
 """
 
 import os
@@ -19,27 +19,29 @@ def get_words_in_file(path):
     file = open(path, 'r', encoding="ISO-8859-1")
 
     characters_allowed = 'abcdefghijklmnopqrstuvwxyz'
-    blacklist = ['come', 'because', 'once', 'may', 'too', 'best', 'thereby', 'after', 'don', 'these', 'gone', 'only',
-                 'shall', 'new', 'against', 'out', 'sunday', 'isn', 'where', 'always', 'him', 'without', 'very', 'does',
-                 'email', 'quite', 'never', 'before', 'entirely', 'anyways', 'still', 'lines', 'monday', 'thank',
-                 'myself', 'from', 'over', 'yet', 'were', 'just', 'will', 'see', 'anymore', 'let', 'while', 'wednesday',
-                 'later', 'must', 'your', 'itself', 'well', 'although', 'use', 'many', 'thought', 'them', 'when',
-                 'have', 'even', 'having', 'tell', 'however', 'himself', 'what', 'mail', 'going', 'yes', 'regards',
-                 'com', 'got', 'his', 'between', 'reply', 'makes', 'two', 'want', 'more', 'not', 'etc', 'though',
-                 'someone', 'one', 'could', 'right', 'that', 'neither', 'did', 'saturday', 'much', 'something', 'get',
-                 'used', 'like', 'think', 'didn', 'most', 'wouldn', 'haven', 'instead', 'same', 'guess', 'some',
-                 'anything', 'those', 'this', 'make', 'know', 'both', 'you', 'need', 'then', 'either', 'subject',
-                 'with', 'say', 'largest', 'made', 'back', 'would', 'actually', 'good', 'few', 'way', 'doing',
-                 'tuesday', 'had', 'left', 'nothing', 'should', 'friday', 'might', 'and', 'are', 'per', 'rather',
-                 'they', 'little', 'since', 'her', 'own', 'she', 'bye', 'lot', 'ones', 'give', 'actual', 'others',
-                 'each', 'until', 'was', 'likely', 'said', 'can', 'please', 'who', 'why', 'other', 'our', 'enable',
-                 'half', 'perhaps', 'for', 'simple', 'the', 'now', 'means', 'anyone', 'day', 'sorry', 'ought', 'any',
-                 'wrong', 'been', 'their', 'also', 'has', 'unless', 'all', 'how', 'better', 'there', 'here', 'mostly',
-                 'its', 'things', 'late', 'wanted', 'damn', 'below', 'about', 'than', 'past', 'look', 'gets',
-                 'thursday', 'hardly', 'first', 'enough', 'thanks', 'which', 'edu', 'take', 'but', 'into', 'sent',
-                 'whole', 'off']
-
-    list_words = []
+    blacklist = ['come', 'because', 'once', 'may', 'too', 'best', 'thereby', 'after', 'don',
+                 'these', 'gone', 'only', 'shall', 'new', 'against', 'out', 'sunday', 'isn',
+                 'where', 'always', 'him', 'without', 'very', 'does', 'email', 'quite',
+                 'never', 'before', 'entirely', 'anyways', 'still', 'lines', 'monday', 'thank',
+                 'myself', 'from', 'over', 'yet', 'were', 'just', 'will', 'see', 'anymore',
+                 'let', 'while', 'wednesday', 'later', 'must', 'your', 'itself', 'well',
+                 'although', 'use', 'many', 'thought', 'them', 'when', 'have', 'even', 'having',
+                 'tell', 'however', 'himself', 'what', 'mail', 'going', 'yes', 'regards', 'com',
+                 'got', 'his', 'between', 'reply', 'makes', 'two', 'want', 'more', 'not', 'etc',
+                 'though', 'someone', 'one', 'could', 'right', 'that', 'neither', 'did', 'saturday',
+                 'much', 'something', 'get', 'used', 'like', 'think', 'didn', 'most', 'wouldn',
+                 'haven', 'instead', 'same', 'guess', 'some', 'anything', 'those', 'this', 'make',
+                 'know', 'both', 'you', 'need', 'then', 'either', 'subject', 'with', 'say',
+                 'largest', 'made', 'back', 'would', 'actually', 'good', 'few', 'way', 'doing',
+                 'tuesday', 'had', 'left', 'nothing', 'should', 'friday', 'might', 'and', 'are',
+                 'per', 'rather', 'they', 'little', 'since', 'her', 'own', 'she', 'bye', 'lot',
+                 'ones', 'give', 'actual', 'others', 'each', 'until', 'was', 'likely', 'said',
+                 'can', 'please', 'who', 'why', 'other', 'our', 'enable', 'half', 'perhaps', 'for',
+                 'simple', 'the', 'now', 'means', 'anyone', 'day', 'sorry', 'ought', 'any', 'wrong',
+                 'been', 'their', 'also', 'has', 'unless', 'all', 'how', 'better', 'there', 'here',
+                 'mostly', 'its', 'things', 'late', 'wanted', 'damn', 'below', 'about', 'than',
+                 'past', 'look', 'gets', 'thursday', 'hardly', 'first', 'enough', 'thanks', 'which',
+                 'edu', 'take', 'but', 'into', 'sent', 'whole', 'off']
 
     message_with_spaces = ''
 
@@ -105,7 +107,8 @@ def get_prob_from_theme(theme_dico, words_list):
 
     for word in words_list:
         if word not in theme_dico:
-            #  This word doesn't appear in any sorted text of this theme (so it isn't in the theme_dico)
+            #  This word doesn't appear in any sorted text of this theme
+            #  (so it isn't in the theme_dico)
             probability += log(0.0000000001)
     return probability
 
@@ -169,7 +172,6 @@ def sort(probabilities, path):
         words = get_words_in_file(path+'/unsorted/'+file)
 
         # Get all the probabilities for the file to be in one theme
-        text_theme_probs = []
         theme_prob = []
         for theme in probabilities:
             text_theme_probs = get_prob_from_theme(probabilities[theme], words)
