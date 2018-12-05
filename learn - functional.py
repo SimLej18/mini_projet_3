@@ -13,9 +13,25 @@ def get_words_in_file(path):
     file = open(path, 'r', encoding="ISO-8859-1")
 
     characters_allowed = 'abcdefghijklmnopqrstuvwxyz'
-    blacklist = ['without','com','subject','lines','the','be','are','of','and','a','in','that','have','s','i','it','but','etc','to','for','not','on','with','has','he','as','you','do','at','this','his','by','from','they','we','say','her','she','on','an','will','my','one','all','would','there','their','what','so','up','out','if','about','who','get','which','me','when','make','can','like','no','just','him','know','take','into','your','good','same','could','them','see','other','than','then','now','look','only','come','its','over','think','also','back','after','use','two','how','our','first','well','way','even','new','want','because','any','these','give','day','most','us','few','bye','regards','mr','ms','is','or','dt','t','q','why','am','p','had','some','ve','re','thanks','once','','']
-
-    list_words = []
+    blacklist = ['come', 'because', 'once', 'may', 'too', 'best', 'thereby', 'after', 'don', 'these', 'gone', 'only',
+                 'shall', 'new', 'against', 'out', 'sunday', 'isn', 'where', 'always', 'him', 'without', 'very', 'does',
+                 'email', 'quite', 'never', 'before', 'entirely', 'anyways', 'still', 'lines', 'monday', 'thank',
+                 'myself', 'from', 'over', 'yet', 'were', 'just', 'will', 'see', 'anymore', 'let', 'while', 'wednesday',
+                 'later', 'must', 'your', 'itself', 'well', 'although', 'use', 'many', 'thought', 'them', 'when',
+                 'have', 'even', 'having', 'tell', 'however', 'himself', 'what', 'mail', 'going', 'yes', 'regards',
+                 'com', 'got', 'his', 'between', 'reply', 'makes', 'two', 'want', 'more', 'not', 'etc', 'though',
+                 'someone', 'one', 'could', 'right', 'that', 'neither', 'did', 'saturday', 'much', 'something', 'get',
+                 'used', 'like', 'think', 'didn', 'most', 'wouldn', 'haven', 'instead', 'same', 'guess', 'some',
+                 'anything', 'those', 'this', 'make', 'know', 'both', 'you', 'need', 'then', 'either', 'subject',
+                 'with', 'say', 'largest', 'made', 'back', 'would', 'actually', 'good', 'few', 'way', 'doing',
+                 'tuesday', 'had', 'left', 'nothing', 'should', 'friday', 'might', 'and', 'are', 'per', 'rather',
+                 'they', 'little', 'since', 'her', 'own', 'she', 'bye', 'lot', 'ones', 'give', 'actual', 'others',
+                 'each', 'until', 'was', 'likely', 'said', 'can', 'please', 'who', 'why', 'other', 'our', 'enable',
+                 'half', 'perhaps', 'for', 'simple', 'the', 'now', 'means', 'anyone', 'day', 'sorry', 'ought', 'any',
+                 'wrong', 'been', 'their', 'also', 'has', 'unless', 'all', 'how', 'better', 'there', 'here', 'mostly',
+                 'its', 'things', 'late', 'wanted', 'damn', 'below', 'about', 'than', 'past', 'look', 'gets',
+                 'thursday', 'hardly', 'first', 'enough', 'thanks', 'which', 'edu', 'take', 'but', 'into', 'sent',
+                 'whole', 'off']
 
     message_with_spaces = ''
 
@@ -27,11 +43,8 @@ def get_words_in_file(path):
         else:
             message_with_spaces += character
 
-
     list_words = str.split(message_with_spaces, ' ')
-    
-
-    list_words = list(filter(None, list_words))  # Delete empty strings
+    list_words = [word for word in list_words if len(word) > 2]  # Delete not-long-enough words
     list_words = list(set(list_words))  # Remove duplicate words
 
     cleared_list_words = []
