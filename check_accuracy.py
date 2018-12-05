@@ -37,6 +37,6 @@ def check_accuracy(path):
                 badly_placed_files += 1
 
     # To prevent division by zero, checks that both variables don't worth 0
-    if not well_placed_files * badly_placed_files == 0:
+    if not (well_placed_files == 0 or badly_placed_files == 0):
         return well_placed_files/(well_placed_files + badly_placed_files) * 100, (well_placed_files, badly_placed_files)
-    return 0, (0, 0)
+    return 0, (well_placed_files, badly_placed_files)
