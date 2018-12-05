@@ -90,27 +90,12 @@ def get_prob_from_theme(theme_dico, words_list):
         # multiplicate the probabilities by the percentage of unappeared word
         else:
             probability += log(theme_dico[word][1])
+
+    for word in words_list:
+        if word not in theme_dico:
+            #  This word doesn't appear in any sorted text of this theme (so it isn't in the theme_dico)
+            probability += log(0.0000000001)
     return probability
-
-
-def check_sibling(check_word, sibling_word):
-    """Return True if the word is in both list. False otherwise
-    Parameters
-    ----------
-    check_word: the word to check (str)
-    sibling_word: list of words in theme_list and text_list (list)
-
-    Return
-    ------
-    True if the word is in both list
-    False if isn't
-
-    """
-    for test_word in sibling_word:
-        if check_word == test_word:
-            return True
-    # after checked the whole list, and there is no sibling
-    return False
 
 
 def get_theme(probabilities, most_probable_theme=('', None)):
