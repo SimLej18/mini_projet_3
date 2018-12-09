@@ -19,10 +19,10 @@ def get_prob_from_theme(theme_dico, words_list):
     # compute probabilities
     probability = 0
     for word in theme_dico:
-        # multiplicate the probabilities by the percentage of appeared word
+        # Add the percentage of appeared word to the probabilities
         if word in words_list:
             probability += log(theme_dico[word][0])
-        # multiplicate the probabilities by the percentage of unappeared word
+        # Add the percentage of unappeared word to the probabilities
         else:
             probability += log(theme_dico[word][1])
     return probability
